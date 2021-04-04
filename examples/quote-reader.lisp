@@ -4,12 +4,12 @@
 (org.tfeb.tools.require-module:needs
  (:org.tfeb.toys.reeder :compile t))
 
-(defpackage :org.tfeb.toys.reeder.quote-reeder
+(defpackage :org.tfeb.play
   (:use
    :cl
    :org.tfeb.toys.reeder))
 
-(in-package :org.tfeb.toys.reeder.quote-reeder)
+(in-package :org.tfeb.play)
 
 (defvar *qr-reedtable* (copy-reedtable nil))
 
