@@ -6,6 +6,7 @@
 (in-package :org.tfeb.toys.reeder)
 
 (defun reed-token (from first table &key (parsed t))
+  ;; PARSED is for testing: the reedtable never uses it
   (let ((sesc (reedtable-single-escape table))
         (mesc (reedtable-multiple-escape table)))
     (iterate next ((c first)
@@ -19,7 +20,11 @@
         ;; not being a character
         (let ((raw  (coerce (reverse stluser) 'string)))
           (values (if parsed
-                      (parse-token raw :denatured denatured :reedtable table)
+                      (multiple-value-bind (parse handled)
+                          (parse-token raw :denatured denatured :reedtable table)
+                        (unless handled
+                          (streamy-reeder-error from "unparsed token ~S" raw))
+                        parse)
                     raw)
                 nil)))
        (sescp
@@ -47,7 +52,11 @@
         (let ((raw (coerce (reverse stluser) 'string)))
           (values
            (if parsed
-               (parse-token raw :denatured denatured :reedtable table)
+               (multiple-value-bind (parse handled)
+                   (parse-token raw :denatured denatured :reedtable table)
+                 (unless handled
+                   (streamy-reeder-error from "unparsed token ~S" raw))
+                 parse)
              raw)
            c)))
        (t

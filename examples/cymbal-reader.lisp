@@ -5,13 +5,14 @@
  (:org.tfeb.toys.reeder :compile t))
 
 (defpackage :org.tfeb.play
-  (:use                                 ;
+  (:use
    :cl
    :org.tfeb.toys.reeder))
 
 (in-package :org.tfeb.play)
 
 (defvar *cymbal-reedtable* (copy-reedtable nil))
+(remove-token-parser 'symbol *qr-reedtable*)
 
 (defvar *namespace* (make-hash-table :test #'equal))
 
