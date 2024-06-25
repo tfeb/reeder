@@ -19,7 +19,7 @@
                    (expt 10 (- imax i))))))
        ((= i imax) v)))
 
-(define-token-parser (integer 1 :reedtable *precursor-reedtable*)
+(define-token-parser (integer 2 :reedtable *precursor-reedtable*)
     ;; General integers, which are always base 10
     ((:sequence
       :start-anchor
@@ -30,7 +30,7 @@
   (* (if (member sign '("" "+") :test #'string=) 1 -1)
      (decimal-string->natural digits)))
 
-(define-token-parser (rational 1 :reedtable *precursor-reedtable*)
+(define-token-parser (rational 2 :reedtable *precursor-reedtable*)
     ;; Rationals, also base 10
     ((:sequence
       :start-anchor

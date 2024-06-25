@@ -16,7 +16,7 @@
 
 (defvar *rational-decimal-reedtable* (copy-reedtable))
 
-(define-token-parser (rational-decimal 1 :reedtable *rational-decimal-reedtable*)
+(define-token-parser (rational-decimal 2 :reedtable *rational-decimal-reedtable*)
     ((:sequence
       :start-anchor
       ;; sign then digits
