@@ -44,11 +44,11 @@
      (/ (decimal-string->natural numerator)
         (decimal-string->natural denominator))))
 
-;;; The zero-priority parser parses tokens as symbols and now tries to
-;;; deal with packages (this is rather untested)
+;;; The symbol parser parses tokens as symbols and now tries to deal
+;;; with packages (this is rather untested)
 ;;;
 
-(define-token-parser (symbol 0 :denatured t :reedtable *precursor-reedtable*)
+(define-token-parser (symbol 1 :denatured t :reedtable *precursor-reedtable*)
     ((:sequence
      :start-anchor
      ;; packege prefix perhaps
@@ -69,7 +69,7 @@
                         (string-upcase package-name)))
                    *package*)))
     (unless package
-      (simple-reeder-error "no package ~S" package-name))
+      (simple-reeder-error "no package ~A" (string-upcase package-name)))
     (if colon/s
         (if (or (= (length colon/s) 2)
                 (eq package (find-package "KEYWORD")))
@@ -81,3 +81,14 @@
             s))
       ;; No colons
       (values (intern (string-upcase name) package)))))
+
+;;; Fallback parser now just signals an error
+;;;
+
+(define-token-parser (fallback 0 :denatured t :reedtable *precursor-reedtable*)
+    ((:sequence
+      :start-anchor
+      (:register (:greedy-repetition 0 nil :everything))
+      :end-anchor)
+     thing)
+  (simple-reeder-error "~S isn't anything I recognise: probably a botched symbol?" thing))
